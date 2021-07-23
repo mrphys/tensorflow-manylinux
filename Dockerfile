@@ -21,3 +21,10 @@ RUN ./patch_auditwheel.sh $(echo "${PYTHON36}" | sed "s/bin/lib/") && \
 # Dependencies of some `mrphys` packages.
 RUN apt-get update && \
     apt-get install -y libfftw3-dev libopenexr-dev
+
+# Install other Python dependencies.
+ARG PYTHON_DEPS="sphinx furo"
+RUN ${PYTHON36} -m pip install ${PYTHON_DEPS} && \
+    ${PYTHON37} -m pip install ${PYTHON_DEPS} && \
+    ${PYTHON38} -m pip install ${PYTHON_DEPS} && \
+    ${PYTHON39} -m pip install ${PYTHON_DEPS}
