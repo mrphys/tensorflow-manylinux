@@ -1,7 +1,11 @@
 # TensorFlow manylinux
 
-A `manylinux` compatible Docker image to build TensorFlow ops.
+[![build](https://github.com/mrphys/tensorflow-manylinux/actions/workflows/build-image.yml/badge.svg)](https://github.com/mrphys/tensorflow-manylinux/actions/workflows/build-image.yml)
 
-Fixes a few issues with the standard `custom-op` images.
+A `manylinux` compatible Docker image to build TensorFlow ops. It is based on
+`manylinux` and `multipython` Docker images created by the TensorFlow team. Then
+the following changes are applied.
 
-- Patches `auditwheel` to whitelist the TensorFlow framework library.
+  - Install TensorFlow on all Python versions.
+  - Patch `auditwheel` to whitelist the TensorFlow framework library.
+  - Install some dependencies required by other `mrphys` packages.
