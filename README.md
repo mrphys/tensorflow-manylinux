@@ -9,3 +9,4 @@ the following changes are applied.
   - Install TensorFlow on all Python versions.
   - Patch `auditwheel` to whitelist the TensorFlow framework library.
   - Install some dependencies required by other `mrphys` packages.
+  - Install latest Git version.
