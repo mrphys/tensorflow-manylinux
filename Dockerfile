@@ -33,3 +33,9 @@ RUN ${PYTHON36} -m pip install ${PYTHON_DEPS} && \
 RUN add-apt-repository -y ppa:git-core/ppa && \
     apt-get update && \
     apt-get install -y git
+
+# Install Git LFS.
+RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash && \
+    apt-get update && \
+    apt-get install git-lfs && \
+    git lfs install
