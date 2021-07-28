@@ -28,3 +28,8 @@ RUN ${PYTHON36} -m pip install ${PYTHON_DEPS} && \
     ${PYTHON37} -m pip install ${PYTHON_DEPS} && \
     ${PYTHON38} -m pip install ${PYTHON_DEPS} && \
     ${PYTHON39} -m pip install ${PYTHON_DEPS}
+
+# Install a newer Git version (GitHub Actions requires 2.18+ as of July 2021).
+RUN add-apt-repository -y ppa:git-core/ppa && \
+    apt-get update && \
+    apt-get install -y git
