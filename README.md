@@ -2,11 +2,14 @@
 
 [![build](https://github.com/mrphys/tensorflow-manylinux/actions/workflows/build-image.yml/badge.svg)](https://github.com/mrphys/tensorflow-manylinux/actions/workflows/build-image.yml)
 
-A `manylinux` compatible Docker image to build TensorFlow ops. It is based on
-`manylinux` and `multipython` Docker images created by the TensorFlow team. Then
-the following changes are applied.
+A `manylinux` compatible Docker image to build the `mrphys` TensorFlow ops. It
+is based on `manylinux` and `multipython` Docker images created by the
+TensorFlow team. Then the following changes are applied.
 
   - Install TensorFlow on all Python versions.
   - Patch `auditwheel` to whitelist the TensorFlow framework library.
-  - Install some dependencies required by other `mrphys` packages.
+  - Install some system dependencies for `mrphys` or third-party packages.
+  - Install dependencies for docs.
   - Install latest Git version.
+  - Compile FFTW3 and FINUFFT for generic x86-64 architectures.
+  - Patch TensorFlow installations to add CUDA headers.
