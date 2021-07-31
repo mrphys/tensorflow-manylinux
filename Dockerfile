@@ -38,12 +38,14 @@ RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.d
     apt-get install git-lfs && \
     git lfs install
 
+# Using devtoolset with correct manylinux2010 libraries.
 ARG PREFIX=/dt7/usr
 ARG CC="${PREFIX}/bin/gcc"
 ARG CXX="${PREFIX}/bin/g++"
 ARG LIBDIR="${PREFIX}/lib"
 ARG CFLAGS="-O3 -march=x86-64 -mtune=generic -mavx2 -fPIC"
 
+# Install FFTW3.
 RUN cd /opt && \
     curl -sL http://www.fftw.org/fftw-3.3.9.tar.gz | tar xz && \ 
     cd fftw-3.3.9 && \
@@ -54,6 +56,7 @@ RUN cd /opt && \
     make && \
     make install
 
+# Install FINUFFT.
 RUN cd /opt && \
     git clone https://github.com/mrphys/finufft && \
     cd finufft && \
@@ -61,6 +64,7 @@ RUN cd /opt && \
     cp -r . /dt7/usr/include/finufft && \
     cp lib-static/libfinufft.a ${LIBDIR}/
 
+# Install CUFINUFFT.
 RUN cd /opt && \
     git clone https://github.com/mrphys/cufinufft --branch release && \
     cd cufinufft && \
@@ -68,6 +72,7 @@ RUN cd /opt && \
     cp -r . /dt7/usr/include/cufinufft && \
     cp lib-static/libcufinufft.a ${LIBDIR}/
 
+# Copy CUDA headers to TF installation.
 ARG CUDA_INCLUDE=/usr/local/cuda/targets/x86_64-linux/include
 ARG TF_CUDA_INCLUDE=site-packages/tensorflow/include/third_party/gpus/cuda/include
 
