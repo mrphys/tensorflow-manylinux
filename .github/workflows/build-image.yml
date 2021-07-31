@@ -21,7 +21,7 @@ jobs:
 
       - name: Get package version
         run: |
-          echo "package_version=$(cat ./VERSION)" >> $GITHUB_ENV
+          echo "version=$(cat ./VERSION)" >> $GITHUB_ENV
 
       - name: Setup Buildx action
         uses: docker/setup-buildx-action@v1
@@ -37,6 +37,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: ${{ startsWith(github.ref, 'refs/tags') }}
-          tags: ghcr.io/${{ github.repository }}:${{ env.package_version }}
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:${{ env.package_version }}
+          tags: ghcr.io/${{ github.repository }}:${{ env.version }}
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:${{ env.version }}
           cache-to: type=inline
