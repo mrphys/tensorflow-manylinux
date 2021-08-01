@@ -43,7 +43,7 @@ ARG PREFIX=/dt7/usr
 ARG CC="${PREFIX}/bin/gcc"
 ARG CXX="${PREFIX}/bin/g++"
 ARG LIBDIR="${PREFIX}/lib"
-ARG CFLAGS="-O3 -march=x86-64 -mtune=generic -mavx2 -fPIC"
+ARG CFLAGS="-O3 -march=x86-64 -mtune=generic -fPIC"
 
 # Install FFTW3.
 RUN cd /opt && \
