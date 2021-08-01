@@ -85,4 +85,15 @@ RUN mkdir -p ${PYLIB}3.6/${TF_CUDA_INCLUDE} && \
     mkdir -p ${PYLIB}3.9/${TF_CUDA_INCLUDE} && \
     cp -r ${CUDA_INCLUDE}/* ${PYLIB}3.9/${TF_CUDA_INCLUDE}
 
+# Ubuntu 18.04 has patchelf 0.9, which has a number of bugs. Install version
+# 0.12 from source.
+RUN cd /opt && \
+    git clone https://github.com/NixOS/patchelf.git --branch 0.12 && \
+    cd patchelf && \
+    ./bootstrap.sh && \
+    ./configure && \
+    make && \
+    make check && \
+    make install
+
 ENV LD_LIBRARY_PATH=/dt7/usr/lib:$LD_LIBRARY_PATH
