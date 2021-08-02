@@ -66,7 +66,7 @@ RUN cd /opt && \
 
 # Install CUFINUFFT.
 RUN cd /opt && \
-    git clone https://github.com/mrphys/cufinufft --branch mrphys/v1.0.0 && \
+    git clone https://github.com/mrphys/cufinufft --branch mrphys/v1.1.0 && \
     cd cufinufft && \
     make lib CXX="${CXX}" CFLAGS="${CFLAGS} -funroll-loops" && \
     cp -r . /dt7/usr/include/cufinufft && \
