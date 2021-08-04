@@ -16,12 +16,12 @@ RUN ./patch_auditwheel.sh ${PYLIB}3.6 && \
     ./patch_auditwheel.sh ${PYLIB}3.8 && \
     ./patch_auditwheel.sh ${PYLIB}3.9
 
-# Dependency of tensorflow-graphics.
+# Install system dependencies.
 RUN apt-get update && \
-    apt-get install -y libopenexr-dev
+    apt-get install -y libopenexr-dev pandoc
 
 # Install other Python dependencies.
-ARG PYTHON_DEPS="sphinx furo"
+ARG PYTHON_DEPS="sphinx furo nbsphinx ipython"
 RUN ${PYBIN}3.6 -m pip install ${PYTHON_DEPS} && \
     ${PYBIN}3.7 -m pip install ${PYTHON_DEPS} && \
     ${PYBIN}3.8 -m pip install ${PYTHON_DEPS} && \
