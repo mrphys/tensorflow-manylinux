@@ -2,19 +2,13 @@ FROM gcr.io/tensorflow-testing/nosla-cuda11.2-cudnn8.1-ubuntu18.04-manylinux2010
 
 ARG PYBIN=/usr/local/bin/python
 ARG PYLIB=/usr/local/lib/python
+ARG TF_VERSION=2.6.0
 
 # Install TensorFlow on all supported Python versions.
-RUN ${PYBIN}3.6 -m pip install tensorflow && \
-    ${PYBIN}3.7 -m pip install tensorflow && \
-    ${PYBIN}3.8 -m pip install tensorflow && \
-    ${PYBIN}3.9 -m pip install tensorflow
-
-# Patch auditwheel.
-COPY patch_auditwheel.sh .
-RUN ./patch_auditwheel.sh ${PYLIB}3.6 && \
-    ./patch_auditwheel.sh ${PYLIB}3.7 && \
-    ./patch_auditwheel.sh ${PYLIB}3.8 && \
-    ./patch_auditwheel.sh ${PYLIB}3.9
+RUN ${PYBIN}3.6 -m pip install tensorflow==${TF_VERSION} && \
+    ${PYBIN}3.7 -m pip install tensorflow==${TF_VERSION} && \
+    ${PYBIN}3.8 -m pip install tensorflow==${TF_VERSION} && \
+    ${PYBIN}3.9 -m pip install tensorflow==${TF_VERSION}
 
 # Install a newer Git version (GitHub Actions requires 2.18+ as of July 2021).
 RUN add-apt-repository -y ppa:git-core/ppa && \
@@ -102,5 +96,12 @@ RUN cd /opt && \
     git clone https://github.com/mrphys/spiral-waveform --branch v1.0.0 && \
     cd spiral-waveform && \
     make install INSTALL_PREFIX=${PREFIX}
+
+# Patch auditwheel.
+COPY patch_auditwheel.sh .
+RUN ./patch_auditwheel.sh ${PYLIB}3.6 && \
+    ./patch_auditwheel.sh ${PYLIB}3.7 && \
+    ./patch_auditwheel.sh ${PYLIB}3.8 && \
+    ./patch_auditwheel.sh ${PYLIB}3.9
 
 ENV LD_LIBRARY_PATH=/dt7/usr/lib:$LD_LIBRARY_PATH
