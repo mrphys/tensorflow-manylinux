@@ -97,4 +97,10 @@ RUN cd /opt && \
     cp -r . ${INCLUDEDIR}/cufinufft && \
     cp lib-static/libcufinufft.a ${LIBDIR}/
 
+# Install spiral waveform.
+RUN cd /opt && \
+    git clone https://github.com/mrphys/spiral-waveform --branch v1.0.0 && \
+    cd spiral-waveform && \
+    make install INSTALL_PREFIX=${PREFIX}
+
 ENV LD_LIBRARY_PATH=/dt7/usr/lib:$LD_LIBRARY_PATH
