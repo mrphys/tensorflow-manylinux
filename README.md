@@ -16,3 +16,4 @@ TensorFlow team. Then the following changes are applied.
   - Install `patchelf` 0.12 from source to fix an
     [issue](https://github.com/pypa/auditwheel/issues/103) with `auditwheel`.
   - Install `spiral_waveform`.
+  - Patch `sphinx` to add custom `autosummary` templates.

@@ -104,4 +104,12 @@ RUN ./patch_auditwheel.sh ${PYLIB}3.6 && \
     ./patch_auditwheel.sh ${PYLIB}3.8 && \
     ./patch_auditwheel.sh ${PYLIB}3.9
 
+# Patch sphinx.
+COPY patch_sphinx.sh .
+COPY class.rst .
+RUN ./patch_sphinx.sh ${PYLIB}3.6 && \
+    ./patch_sphinx.sh ${PYLIB}3.7 && \
+    ./patch_sphinx.sh ${PYLIB}3.8 && \
+    ./patch_sphinx.sh ${PYLIB}3.9
+
 ENV LD_LIBRARY_PATH=/dt7/usr/lib:$LD_LIBRARY_PATH
