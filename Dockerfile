@@ -85,9 +85,9 @@ RUN cd /opt && \
 
 # Install CUFINUFFT.
 RUN cd /opt && \
-    git clone https://github.com/mrphys/cufinufft --branch mrphys/v1.2.0 && \
+    git clone https://github.com/mrphys/cufinufft --branch mrphys/v1.2.1 && \
     cd cufinufft && \
-    make lib CXX="${CXX}" CFLAGS="${CFLAGS} -funroll-loops" && \
+    make -j $(nproc) lib CXX="${CXX}" CFLAGS="${CFLAGS} -funroll-loops" && \
     cp -r . ${INCLUDEDIR}/cufinufft && \
     cp lib-static/libcufinufft.a ${LIBDIR}/
 
