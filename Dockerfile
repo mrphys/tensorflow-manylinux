@@ -75,17 +75,20 @@ RUN cd /opt && \
     make && \
     make install
 
+# Disable Git detached head warnings.
+RUN git config --global advice.detachedHead false
+
 # Install FINUFFT.
 RUN cd /opt && \
     git clone https://github.com/mrphys/finufft --branch mrphys/v1.0.0 && \
     cd finufft && \
-    make lib CXX="${CXX}" CFLAGS="${CFLAGS} -funroll-loops -fcx-limited-range" && \
+    make lib CXX="${CXX}" CFLAGS="${CFLAGS} -DFFTW_PLAN_SAFE -funroll-loops -fcx-limited-range" && \
     cp -r . ${INCLUDEDIR}/finufft && \
     cp lib-static/libfinufft.a ${LIBDIR}/
 
 # Install CUFINUFFT.
 RUN cd /opt && \
-    git clone https://github.com/mrphys/cufinufft --branch mrphys/v1.2.1 && \
+    git clone https://github.com/mrphys/cufinufft --branch mrphys/v1.2.2 && \
     cd cufinufft && \
     make -j $(nproc) lib CXX="${CXX}" CFLAGS="${CFLAGS} -funroll-loops" && \
     cp -r . ${INCLUDEDIR}/cufinufft && \
