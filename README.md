@@ -21,11 +21,9 @@ TensorFlow team. Then the following changes are applied.
 TensorFlow Versions
 ^^^^^^^^^^^^^^^^^^^
 
-Each TensorFlow Manylinux image has a specific TF version as detailed below:
+Each manylinux image has a specific TF version as detailed below:
 
-====================  ==========
-TensorFlow manylinux  TensorFlow
-====================  ==========
-v1.7                  v2.6
-v1.8                  v2.7
-====================  ==========
+| TensorFlow manylinux | TensorFlow |
+| -------------------- | ---------- |
+| v1.7                 | v2.6       |
+| v1.8                 | v2.7       |
