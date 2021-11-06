@@ -17,3 +17,15 @@ TensorFlow team. Then the following changes are applied.
     [issue](https://github.com/pypa/auditwheel/issues/103) with `auditwheel`.
   - Install `spiral_waveform`.
   - Patch `sphinx` to add custom `autosummary` templates.
+
+TensorFlow Versions
+^^^^^^^^^^^^^^^^^^^
+
+Each TensorFlow Manylinux image has a specific TF version as detailed below:
+
+====================  ==========
+TensorFlow manylinux  TensorFlow
+====================  ==========
+v1.7                  v2.6
+v1.8                  v2.7
+====================  ==========

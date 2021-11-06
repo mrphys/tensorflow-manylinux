@@ -2,11 +2,10 @@ FROM gcr.io/tensorflow-testing/nosla-cuda11.2-cudnn8.1-ubuntu18.04-manylinux2010
 
 ARG PYBIN=/usr/local/bin/python
 ARG PYLIB=/usr/local/lib/python
-ARG TF_VERSION=2.6.0
+ARG TF_VERSION=2.7.0
 
 # Install TensorFlow on all supported Python versions.
-RUN ${PYBIN}3.6 -m pip install tensorflow==${TF_VERSION} && \
-    ${PYBIN}3.7 -m pip install tensorflow==${TF_VERSION} && \
+RUN ${PYBIN}3.7 -m pip install tensorflow==${TF_VERSION} && \
     ${PYBIN}3.8 -m pip install tensorflow==${TF_VERSION} && \
     ${PYBIN}3.9 -m pip install tensorflow==${TF_VERSION}
 
@@ -25,9 +24,7 @@ RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.d
 ARG CUDA_INCLUDE=/usr/local/cuda/targets/x86_64-linux/include
 ARG TF_CUDA_INCLUDE=site-packages/tensorflow/include/third_party/gpus/cuda/include
 
-RUN mkdir -p ${PYLIB}3.6/${TF_CUDA_INCLUDE} && \
-    cp -r ${CUDA_INCLUDE}/* ${PYLIB}3.6/${TF_CUDA_INCLUDE} && \
-    mkdir -p ${PYLIB}3.7/${TF_CUDA_INCLUDE} && \
+RUN mkdir -p ${PYLIB}3.7/${TF_CUDA_INCLUDE} && \
     cp -r ${CUDA_INCLUDE}/* ${PYLIB}3.7/${TF_CUDA_INCLUDE} && \
     mkdir -p ${PYLIB}3.8/${TF_CUDA_INCLUDE} && \
     cp -r ${CUDA_INCLUDE}/* ${PYLIB}3.8/${TF_CUDA_INCLUDE} && \
@@ -51,8 +48,7 @@ RUN apt-get update && \
 
 # Install other Python dependencies.
 ARG PYTHON_DEPS="sphinx furo nbsphinx ipython"
-RUN ${PYBIN}3.6 -m pip install ${PYTHON_DEPS} && \
-    ${PYBIN}3.7 -m pip install ${PYTHON_DEPS} && \
+RUN ${PYBIN}3.7 -m pip install ${PYTHON_DEPS} && \
     ${PYBIN}3.8 -m pip install ${PYTHON_DEPS} && \
     ${PYBIN}3.9 -m pip install ${PYTHON_DEPS}
 
@@ -102,16 +98,14 @@ RUN cd /opt && \
 
 # Patch auditwheel.
 COPY patch_auditwheel.sh .
-RUN ./patch_auditwheel.sh ${PYLIB}3.6 && \
-    ./patch_auditwheel.sh ${PYLIB}3.7 && \
+RUN ./patch_auditwheel.sh ${PYLIB}3.7 && \
     ./patch_auditwheel.sh ${PYLIB}3.8 && \
     ./patch_auditwheel.sh ${PYLIB}3.9
 
 # Patch sphinx.
 COPY patch_sphinx.sh .
 COPY class.rst .
-RUN ./patch_sphinx.sh ${PYLIB}3.6 && \
-    ./patch_sphinx.sh ${PYLIB}3.7 && \
+RUN ./patch_sphinx.sh ${PYLIB}3.7 && \
     ./patch_sphinx.sh ${PYLIB}3.8 && \
     ./patch_sphinx.sh ${PYLIB}3.9
 
