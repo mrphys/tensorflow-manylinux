@@ -18,8 +18,7 @@ TensorFlow team. Then the following changes are applied.
   - Install `spiral_waveform`.
   - Patch `sphinx` to add custom `autosummary` templates.
 
-TensorFlow Versions
-^^^^^^^^^^^^^^^^^^^
+## TensorFlow Versions
 
 Each manylinux image has a specific TensorFlow version as detailed below:
 
