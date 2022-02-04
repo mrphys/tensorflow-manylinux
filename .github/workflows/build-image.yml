@@ -21,13 +21,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Free some disk space to avoid running out of space later.
-      # As of Feb 2022, deleting the Android folder frees about 15 GB,
+      # Free some disk space on the GitHub runner to avoid running out of space
+      # later. As of Feb 2022, deleting the Android folder frees about 15 GB,
       # while the .NET folder frees about 5 GB.
       - name: Free disk space
         run: |
-          rm -rf /usr/local/lib/android
-          rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
           df -h
 
       # - name: Get package version
