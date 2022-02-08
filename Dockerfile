@@ -1,14 +1,16 @@
-FROM gcr.io/tensorflow-testing/nosla-cuda11.2-cudnn8.1-ubuntu18.04-manylinux2010-multipython:latest
+FROM gcr.io/tensorflow-testing/nosla-cuda11.2-cudnn8.1-ubuntu18.04-manylinux2010-multipython@sha256:904ea6196b81fe67bf5a3c00d336b7c6f990d49291abd2c1dec0654ee7ac3041
 
 ARG PYBIN=/usr/local/bin/python
 ARG PYLIB=/usr/local/lib/python
 ARG TF_VERSION=2.8.0
+ARG PY_VERSIONS="3.7 3.8 3.9 3.10"
+
+# Uninstall some nightly packages.
+ARG PACKAGES_TO_UNINSTALL="keras-nightly tf-estimator-nightly"
+RUN for PYVER in ${PY_VERSIONS}; do ${PYBIN}${PYVER} -m pip uninstall -y ${PACKAGES_TO_UNINSTALL}; done
 
 # Install TensorFlow on all supported Python versions.
-RUN ${PYBIN}3.7 -m pip install tensorflow==${TF_VERSION} && \
-    ${PYBIN}3.8 -m pip install tensorflow==${TF_VERSION} && \
-    ${PYBIN}3.9 -m pip install tensorflow==${TF_VERSION} && \
-    ${PYBIN}3.10 -m pip install tensorflow==${TF_VERSION}
+RUN for PYVER in ${PY_VERSIONS}; do ${PYBIN}${PYVER} -m pip install tensorflow==${TF_VERSION}; done
 
 # Install a newer Git version (GitHub Actions requires 2.18+ as of July 2021).
 RUN add-apt-repository -y ppa:git-core/ppa && \
