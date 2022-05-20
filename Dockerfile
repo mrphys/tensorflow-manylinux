@@ -1,8 +1,14 @@
-FROM gcr.io/tensorflow-testing/nosla-cuda11.2-cudnn8.1-ubuntu18.04-manylinux2010-multipython@sha256:904ea6196b81fe67bf5a3c00d336b7c6f990d49291abd2c1dec0654ee7ac3041
+FROM gcr.io/tensorflow-testing/nosla-cuda11.2-cudnn8.1-ubuntu20.04-manylinux2014-multipython@sha256:a1b6c03012002e9c831d6019ec53ae9aa87c16c06dce58fbcc02ae4959003c41
+
+# https://developer.nvidia.com/blog/updating-the-cuda-linux-gpg-repository-key/
+RUN apt-key del 7fa2af80 && \
+    wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.0-1_all.deb && \
+    dpkg -i cuda-keyring_1.0-1_all.deb && \
+    rm /etc/apt/sources.list.d/cuda.list /etc/apt/sources.list.d/nvidia-ml.list
 
 ARG PYBIN=/usr/local/bin/python
 ARG PYLIB=/usr/local/lib/python
-ARG TF_VERSION=2.8.0
+ARG TF_VERSION=2.9.0
 ARG PY_VERSIONS="3.7 3.8 3.9 3.10"
 
 # Uninstall some nightly packages.
@@ -58,8 +64,8 @@ RUN ${PYBIN}3.7 -m pip install ${PYTHON_DEPS} && \
     ${PYBIN}3.9 -m pip install ${PYTHON_DEPS} && \
     ${PYBIN}3.10 -m pip install ${PYTHON_DEPS}
 
-# Using devtoolset with correct manylinux2010 libraries.
-ARG PREFIX=/dt7/usr
+# Using devtoolset with correct manylinux2014 libraries.
+ARG PREFIX=/dt9/usr
 ARG CC="${PREFIX}/bin/gcc"
 ARG CXX="${PREFIX}/bin/g++"
 ARG LIBDIR="${PREFIX}/lib"
@@ -101,4 +107,4 @@ RUN ./patch_sphinx.sh ${PYLIB}3.7 && \
     ./patch_sphinx.sh ${PYLIB}3.9 && \
     ./patch_sphinx.sh ${PYLIB}3.10
 
-ENV LD_LIBRARY_PATH=/dt7/usr/lib:$LD_LIBRARY_PATH
+ENV LD_LIBRARY_PATH=/dt9/usr/lib:$LD_LIBRARY_PATH

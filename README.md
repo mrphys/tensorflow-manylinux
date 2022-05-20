@@ -11,7 +11,7 @@ TensorFlow team. Then the following changes are applied.
   - Install some system dependencies for `mrphys` or third-party packages.
   - Install dependencies for docs.
   - Install latest Git version.
-  - Compile FFTW3 and FINUFFT for generic x86-64 architectures.
+  - Compile FFTW3 for generic x86-64 architectures.
   - Patch TensorFlow installations to add CUDA headers.
   - Install `patchelf` 0.12 from source to fix an
     [issue](https://github.com/pypa/auditwheel/issues/103) with `auditwheel`.
@@ -27,3 +27,5 @@ Each manylinux image has a specific TensorFlow version as detailed below:
 | v1.7                 | v2.6       |
 | v1.8                 | v2.7       |
 | v1.9                 | v2.8       |
+| v1.10                | v2.8       |
+| v1.11                | v2.9       |
