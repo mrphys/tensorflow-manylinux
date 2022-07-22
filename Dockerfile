@@ -58,7 +58,7 @@ RUN apt-get update && \
     apt-get install -y libopenexr-dev pandoc
 
 # Install other Python dependencies.
-ARG PYTHON_DEPS="sphinx==4.4.0 furo nbsphinx ipython sphinx-sitemap"
+ARG PYTHON_DEPS="sphinx==4.4.0 furo nbsphinx ipython sphinx-sitemap myst-nb sphinx-book-theme"
 RUN ${PYBIN}3.7 -m pip install ${PYTHON_DEPS} && \
     ${PYBIN}3.8 -m pip install ${PYTHON_DEPS} && \
     ${PYBIN}3.9 -m pip install ${PYTHON_DEPS} && \
