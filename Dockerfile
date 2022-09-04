@@ -1,3 +1,5 @@
+# docker build --tag ghcr.io/mrphys/tensorflow-manylinux:1.13.0 .
+# docker push ghcr.io/mrphys/tensorflow-manylinux:1.13.0
 FROM gcr.io/tensorflow-testing/nosla-cuda11.2-cudnn8.1-ubuntu20.04-manylinux2014-multipython@sha256:a1b6c03012002e9c831d6019ec53ae9aa87c16c06dce58fbcc02ae4959003c41
 
 # https://developer.nvidia.com/blog/updating-the-cuda-linux-gpg-repository-key/
@@ -53,17 +55,6 @@ RUN cd /opt && \
     make check && \
     make install
 
-# Install system dependencies.
-RUN apt-get update && \
-    apt-get install -y libopenexr-dev pandoc
-
-# Install other Python dependencies.
-ARG PYTHON_DEPS="sphinx==4.4.0 furo nbsphinx ipython sphinx-sitemap myst-nb sphinx-book-theme"
-RUN ${PYBIN}3.7 -m pip install ${PYTHON_DEPS} && \
-    ${PYBIN}3.8 -m pip install ${PYTHON_DEPS} && \
-    ${PYBIN}3.9 -m pip install ${PYTHON_DEPS} && \
-    ${PYBIN}3.10 -m pip install ${PYTHON_DEPS}
-
 # Using devtoolset with correct manylinux2014 libraries.
 ARG PREFIX=/dt9/usr
 ARG CC="${PREFIX}/bin/gcc"
@@ -74,7 +65,7 @@ ARG CFLAGS="-O3 -march=x86-64 -mtune=generic -fPIC"
 
 # Install FFTW3.
 RUN cd /opt && \
-    curl -sL http://www.fftw.org/fftw-3.3.9.tar.gz | tar xz && \ 
+    curl -sL http://www.fftw.org/fftw-3.3.9.tar.gz | tar xz && \
     cd fftw-3.3.9 && \
     ./configure CC="${CC}" CFLAGS="${CFLAGS}" --prefix ${PREFIX} --enable-openmp --enable-float && \
     make && \
@@ -92,6 +83,20 @@ RUN cd /opt && \
     cd spiral-waveform && \
     make install INSTALL_PREFIX=${PREFIX}
 
+# Install system dependencies.
+RUN apt-get update && \
+    apt-get install -y libopenexr-dev pandoc graphviz
+
+# Install other Python dependencies.
+ARG SPHINX_VERSION="4.5.0"
+ARG PYDATA_SPHINX_THEME_VERSION="0.8.0"
+ARG SPHINX_BOOK_THEME_VERSION="0.3.3"
+ARG PYTHON_DEPS="sphinx==${SPHINX_VERSION} pydata-sphinx-theme==${PYDATA_SPHINX_THEME_VERSION} ipython sphinx-sitemap myst-nb sphinx-book-theme==${SPHINX_BOOK_THEME_VERSION} pydot"
+RUN ${PYBIN}3.7 -m pip install ${PYTHON_DEPS} && \
+    ${PYBIN}3.8 -m pip install ${PYTHON_DEPS} && \
+    ${PYBIN}3.9 -m pip install ${PYTHON_DEPS} && \
+    ${PYBIN}3.10 -m pip install ${PYTHON_DEPS}
+
 # Patch auditwheel.
 COPY patch_auditwheel.sh .
 RUN ./patch_auditwheel.sh ${PYLIB}3.7 && \
@@ -99,12 +104,15 @@ RUN ./patch_auditwheel.sh ${PYLIB}3.7 && \
     ./patch_auditwheel.sh ${PYLIB}3.9 && \
     ./patch_auditwheel.sh ${PYLIB}3.10
 
-# Patch sphinx.
-COPY patch_sphinx.sh .
-COPY class.rst .
-RUN ./patch_sphinx.sh ${PYLIB}3.7 && \
-    ./patch_sphinx.sh ${PYLIB}3.8 && \
-    ./patch_sphinx.sh ${PYLIB}3.9 && \
-    ./patch_sphinx.sh ${PYLIB}3.10
+# Install custom sphinx extensions.
+COPY extensions /opt/sphinx/extensions
+
+# Install protoc.
+ARG PROTOBUF_VERSION="3.9.2"
+RUN mkdir /opt/protoc && \
+    cd /opt/protoc && \
+    wget https://github.com/google/protobuf/releases/download/v${PROTOBUF_VERSION}/protoc-${PROTOBUF_VERSION}-linux-x86_64.zip && \
+    unzip /opt/protoc/protoc-${PROTOBUF_VERSION}-linux-x86_64.zip && \
+    cp bin/protoc /usr/local/bin/protoc
 
 ENV LD_LIBRARY_PATH=/dt9/usr/lib:$LD_LIBRARY_PATH
