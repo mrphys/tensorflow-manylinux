@@ -1,20 +1,14 @@
-# docker build --tag ghcr.io/mrphys/tensorflow-manylinux:1.13.0 .
-# docker push ghcr.io/mrphys/tensorflow-manylinux:1.13.0
-FROM gcr.io/tensorflow-testing/nosla-cuda11.2-cudnn8.1-ubuntu20.04-manylinux2014-multipython@sha256:a1b6c03012002e9c831d6019ec53ae9aa87c16c06dce58fbcc02ae4959003c41
-
-# https://developer.nvidia.com/blog/updating-the-cuda-linux-gpg-repository-key/
-RUN apt-key del 7fa2af80 && \
-    wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.0-1_all.deb && \
-    dpkg -i cuda-keyring_1.0-1_all.deb && \
-    rm /etc/apt/sources.list.d/cuda.list /etc/apt/sources.list.d/nvidia-ml.list
+# docker build --tag ghcr.io/mrphys/tensorflow-manylinux:1.14.0 .
+# docker push ghcr.io/mrphys/tensorflow-manylinux:1.14.0
+FROM gcr.io/tensorflow-testing/nosla-cuda11.2-cudnn8.1-ubuntu20.04-manylinux2014-multipython@sha256:48612bd85709cd014711d0b0f87e0806f3567d06d2e81c6e860516b87498b821
 
 ARG PYBIN=/usr/local/bin/python
 ARG PYLIB=/usr/local/lib/python
-ARG TF_VERSION=2.9.0
+ARG TF_VERSION=2.10.0
 ARG PY_VERSIONS="3.7 3.8 3.9 3.10"
 
 # Uninstall some nightly packages.
-ARG PACKAGES_TO_UNINSTALL="keras-nightly tf-estimator-nightly"
+ARG PACKAGES_TO_UNINSTALL="keras-nightly tf-estimator-nightly tb-nightly"
 RUN for PYVER in ${PY_VERSIONS}; do ${PYBIN}${PYVER} -m pip uninstall -y ${PACKAGES_TO_UNINSTALL}; done
 
 # Install TensorFlow on all supported Python versions.
