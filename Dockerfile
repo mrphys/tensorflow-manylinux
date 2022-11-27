@@ -1,10 +1,10 @@
-# docker build --tag ghcr.io/mrphys/tensorflow-manylinux:1.14.0 .
-# docker push ghcr.io/mrphys/tensorflow-manylinux:1.14.0
+# docker build --tag ghcr.io/mrphys/tensorflow-manylinux:${VERSION} .
+# docker push ghcr.io/mrphys/tensorflow-manylinux:${VERSION}
 FROM gcr.io/tensorflow-testing/nosla-cuda11.2-cudnn8.1-ubuntu20.04-manylinux2014-multipython@sha256:48612bd85709cd014711d0b0f87e0806f3567d06d2e81c6e860516b87498b821
 
 ARG PYBIN=/usr/local/bin/python
 ARG PYLIB=/usr/local/lib/python
-ARG TF_VERSION=2.10.0
+ARG TF_VERSION=2.11.0
 ARG PY_VERSIONS="3.7 3.8 3.9 3.10"
 
 # Uninstall some nightly packages.
@@ -13,11 +13,6 @@ RUN for PYVER in ${PY_VERSIONS}; do ${PYBIN}${PYVER} -m pip uninstall -y ${PACKA
 
 # Install TensorFlow on all supported Python versions.
 RUN for PYVER in ${PY_VERSIONS}; do ${PYBIN}${PYVER} -m pip install tensorflow==${TF_VERSION}; done
-
-# Install a newer Git version (GitHub Actions requires 2.18+ as of July 2021).
-RUN add-apt-repository -y ppa:git-core/ppa && \
-    apt-get update && \
-    apt-get install -y git
 
 # Install Git LFS.
 RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash && \

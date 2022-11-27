@@ -32,3 +32,4 @@ Each manylinux image has a specific TensorFlow version as detailed below:
 | v1.12                | v2.9       |
 | v1.13                | v2.9       |
 | v1.14                | v2.10      |
+| v1.15                | v2.11      |
