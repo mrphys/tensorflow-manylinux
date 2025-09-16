@@ -3,6 +3,24 @@
 # https://github.com/pypa/manylinux
 FROM quay.io/pypa/manylinux_2_28_x86_64
 
+# manylinux_2_28 images support x86_64, i686, aarch64, ppc64le and s390x.
+# Client-side pip version required: pip >= 20.3 
+# CPython (sources) version embedding a compatible pip: 3.8.10+, 3.9.5+, 3.10.0+
+# Distribution default pip compatibility: ALT Linux 10+, RHEL 9+, Debian 11+, Fedora 34+, Mageia 8+, Photon OS 3.0 with updates, Ubuntu 21.04+
+#
+# Toolchain: GCC 14
+#   x86_64 image: quay.io/pypa/manylinux_2_28_x86_64
+#   i686 image: quay.io/pypa/manylinux_2_28_i686
+#   aarch64 image: quay.io/pypa/manylinux_2_28_aarch64
+#   ppc64le image: quay.io/pypa/manylinux_2_28_ppc64le
+#   s390x image: quay.io/pypa/manylinux_2_28_s390x
+#
+# Built wheels are also expected to be compatible with other distros using glibc 2.28 or later, including:
+#    Debian 10+
+#   Ubuntu 18.10+
+#   Fedora 29+
+#   CentOS/RHEL 8+
+
 # https://www.tensorflow.org/install/source
 ARG TF_VERSION=2.19
 ARG CUDA_VERSION=12.5
