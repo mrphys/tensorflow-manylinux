@@ -1,19 +1,10 @@
 FROM ghcr.io/mrphys/tensorflow-manylinux-base:latest
 
-ARG PY_VERSION=3.9 
-#3.10 3.11 3.12 3.13 3.14 3.15"
-RUN echo "hello there: ${PY_VERSION}"
-
-
-
-
-
+ARG PY_VERSION
 
 # Use only the requested Python version
 ENV PATH="/opt/python/cp${PY_VERSION/./}-cp${PY_VERSION/./}/bin:${PATH}"
 ENV PYBIN="/opt/python/cp${PY_VERSION/./}-cp${PY_VERSION/./}/bin/python"
-
-RUN echo "hello there, PATH: ${PATH}"
 
 # Upgrade pip & install TensorFlow
 # https://www.tensorflow.org/install/source
@@ -47,7 +38,7 @@ ARG SPHINX_BOOK_THEME_VERSION="1.0.1"
 # NEW
 ARG MYST_VERSION="0.17.2"
 
-ARG PYTHON_DEPS="sphinx==${SPHINX_VERSION} pydata-sphinx-theme==${PYDATA_SPHINX_THEME_VERSION} ipython sphinx-sitemap myst-nb==${MYST_VERSION} sphinx-book-theme==${SPHINX_BOOK_THEME_VERSION} pydot"
+ARG PYTHON_DEPS="sphinx==${SPHINX_VERSION} pydata-sphinx-theme==${PYDATA_SPHINX_THEME_VERSION} ipython sphinx-sitemap myst-nb==${MYST_VERSION} sphinx-book-theme==${SPHINX_BOOK_THEME_VERSION} pydot pylint flake8 black"
 
 RUN ${PYBIN} -m pip install ${PYTHON_DEPS}
 
@@ -60,5 +51,13 @@ COPY patch_auditwheel.sh .
 
 RUN ./patch_auditwheel.sh "/opt/python/cp${PY_VERSION/./}-cp${PY_VERSION/./}/lib/python3.*"
 
+# COPY extensions /opt/sphinx/extensions
+
+# -------------------------------------------------
+# Copy source, lint configs, and extensions
+# -------------------------------------------------
+WORKDIR /app
+COPY . /app
 COPY extensions /opt/sphinx/extensions
 
+RUN ${PYBIN} -m pylint --generate-rcfile > /app/pylintrc
