@@ -9,7 +9,7 @@ ENV PYBIN="/opt/python/cp${PY_VERSION/./}-cp${PY_VERSION/./}/bin/python"
 # Upgrade pip & install TensorFlow
 # https://www.tensorflow.org/install/source
 # I only see 2.16 on the tensorflow website...?
-ARG TF_VERSION=2.19
+ARG TF_VERSION=2.20
 
 RUN ${PYBIN} -m pip install --upgrade pip setuptools wheel
 

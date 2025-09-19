@@ -11,7 +11,7 @@ Then tun the docker image
 
 docker run --rm -it   -v $(pwd):/workspace   -w /workspace   ghcr.io/mrphys/tensorflow-manylinux:py3.9 
 
-Then try the commands from the makefil for TensorFlor-MRI to see if they will work
+Then try the commands from the build-package.yml for TensorFlor-MRI to see if they will work
 
 
 
