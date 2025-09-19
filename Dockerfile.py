@@ -13,7 +13,14 @@ ARG TF_VERSION=2.19
 
 RUN ${PYBIN} -m pip install --upgrade pip setuptools wheel
 
+# ✅ Force numpy<2 to keep TensorFlow compatible
+# ✅ Pin NumPy < 2 (TF 2.19 not yet compatible with NumPy 2.x)
+RUN ${PYBIN} -m pip install "numpy<2" "tensorflow==${TF_VERSION}"
+
 RUN ${PYBIN} -m pip install tensorflow==${TF_VERSION}
+
+# ✅ Pin protobuf to match protoc (6.32.1 from Dockerfile.base)
+RUN ${PYBIN} -m pip install "protobuf==6.32.1"
 
 # -------------------------------------------------
 # Python setup
@@ -24,7 +31,7 @@ RUN ${PYBIN} -m pip install tensorflow==${TF_VERSION}
 
 
 # Install TensorFlow on all supported Python versions.
-RUN for PYVER in ${PY_VERSION}; do ${PYBIN}${PYVER} -m pip install tensorflow==${TF_VERSION}; done
+# RUN for PYVER in ${PY_VERSION}; do ${PYBIN}${PYVER} -m pip install tensorflow==${TF_VERSION}; done
 
 # -------------------------------------------------
 # Sphinx & Python doc dependencies
@@ -38,7 +45,12 @@ ARG SPHINX_BOOK_THEME_VERSION="1.0.1"
 # NEW
 ARG MYST_VERSION="0.17.2"
 
-ARG PYTHON_DEPS="sphinx==${SPHINX_VERSION} pydata-sphinx-theme==${PYDATA_SPHINX_THEME_VERSION} ipython sphinx-sitemap myst-nb==${MYST_VERSION} sphinx-book-theme==${SPHINX_BOOK_THEME_VERSION} pydot pylint flake8 black"
+ARG PYTHON_DEPS="sphinx==${SPHINX_VERSION} \
+                pydata-sphinx-theme==${PYDATA_SPHINX_THEME_VERSION} \
+                ipython sphinx-sitemap \
+                myst-nb==${MYST_VERSION} \
+                sphinx-book-theme==${SPHINX_BOOK_THEME_VERSION} \
+                pydot pylint flake8 black pydantic"
 
 RUN ${PYBIN} -m pip install ${PYTHON_DEPS}
 

@@ -57,6 +57,7 @@ RUN dnf install -y \
         pandoc \
         OpenEXR-libs \
         OpenEXR-devel \
+        rsync \
     && dnf clean all \
     && rm -rf /var/cache/dnf
 

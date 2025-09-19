@@ -4,9 +4,10 @@
 docker build -t ghcr.io/mrphys/tensorflow-manylinux-base:latest -f Dockerfile.base .
 
 # Build for each Python version
-# 
-for PY in 3.9 3.10 3.11 3.12; do
+# 3.10 3.11 3.12
+for PY in 3.9 ; do
     docker build \
+      --no-cache \
       --build-arg PY_VERSION=$PY \
       -t ghcr.io/mrphys/tensorflow-manylinux:py$PY \
       -f Dockerfile.py .
